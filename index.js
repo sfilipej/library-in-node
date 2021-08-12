@@ -1,18 +1,26 @@
-const { response } = require('express');
 const express = require('express');
 const app = express();
+const port = 3000;
 
 app.use(express.json());
 
 const http = require('http');
-const port = 3000;
+
+const usuarios = Array();
 
 app.get('/', (req, res) => {
-    res.send('GET');
+    res.status(200).json(usuarios);
 });
 
 app.post('/', (req, res) => {
-    res.send('POST');
+    const user = req.body
+    console.log("Login: " + user.login);
+    console.log("Senha: " + user.senha);
+
+    usuarios.push(user);
+
+    console.log(usuarios);
+    res.send('Adicionado com sucesso');
 });
 
 app.put('/', (req, res) => {
