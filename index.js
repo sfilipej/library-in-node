@@ -4,13 +4,9 @@ const port = 3000;
 
 app.use(express.json());
 
-var userController = require('./controller/user');
-var booksControler = require('./controller/user');
-var reservationController = require('./controller/user');
+const routing = require('./router/routing')
 
-app.use(userController);
-app.use(booksControler);
-app.use(reservationController);
+app.use(routing);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
