@@ -1,3 +1,5 @@
+const request = require("request");
+
 module.exports = () => {
 
     var usuarios = Array();
@@ -16,10 +18,13 @@ module.exports = () => {
     };
 
     controller.salvar = (req, res) => {
-        const user = req.body
-        usuarios.push(user);
-        console.log(usuarios);
-        res.send('Adicionado com sucesso');
+        const user = req.body;
+        var cep = user.cep;
+        request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
+            user.endereco = JSON.parse(body);
+            usuarios.push(user);
+            res.send('Adicionado com sucesso');
+        });
     };
 
     controller.alterar = (req, res) => {
