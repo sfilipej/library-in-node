@@ -8,14 +8,12 @@ module.exports = () => {
 
     controller.salvar = (req, res) => {
         const user = req.body;
-   /*      var cep = user.cep;
+        var cep = user.cep;
         request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
-            user.endereco = JSON.parse(body);
-            usuarios.push(user);
+            user.endereco = body;
+            userRep.salvar(user);
             res.send('Adicionado com sucesso');
-        }); */
-        userRep.salvar(user);
-        res.send('Adicionado com sucesso');
+        });
     };
 
     controller.listar = (req, res) => {
@@ -36,8 +34,12 @@ module.exports = () => {
 
     controller.alterar = (req, res) => {
         user = req.body;
-        userRep.alterar(user);
-        res.status(200).json(`User ${user.id}  alterado!`);
+        var cep = user.cep;
+        request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
+            user.endereco = body;
+            userRep.alterar(user);
+            res.status(200).json(`User ${user.id}  alterado!`);
+        });
     };
 
     controller.excluir = (req, res) => {

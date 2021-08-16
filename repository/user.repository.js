@@ -36,7 +36,7 @@ module.exports = () => {
 
     repository.alterar = (user) => {
         console.log(user);
-        con.query('UPDATE USERS SET login = ?, senha = ?, cep =? WHERE ID = ?', [user.login, user.senha, user.cep, user.id], function(err, rows) {
+        con.query('UPDATE USERS SET login = ?, senha = ?, cep =?, endereco =? WHERE ID = ?', [user.login, user.senha, user.cep, user.endereco, user.id], function(err, rows) {
             if(err){
                 console.log(err);
                 return;
