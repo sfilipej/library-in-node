@@ -1,11 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const routing = require('./router/routing');
 
 app.use(express.json());
-
-const routing = require('./router/routing')
-
 app.use(routing);
 
 app.listen(port, () => {

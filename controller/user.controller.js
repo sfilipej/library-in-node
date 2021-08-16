@@ -1,34 +1,38 @@
 const request = require("request");
+var userRep = require('../repository/user.repository')();
 
 module.exports = () => {
-
-    var usuarios = Array();
+    
     const controller = {};
-
-    controller.listar = (req, res) => {
-        res.status(200).json(usuarios);
-    };
-
-    controller.filtrar = (req, res) => {
-        const filtro = req.query.login;
-        const userFilter = usuarios.filter(function(item, index) {
-            return item.login === filtro
-        })
-        res.status(200).json(userFilter);
-    };
 
     controller.salvar = (req, res) => {
         const user = req.body;
-        var cep = user.cep;
+   /*      var cep = user.cep;
         request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
             user.endereco = JSON.parse(body);
             usuarios.push(user);
             res.send('Adicionado com sucesso');
-        });
+        }); */
+        userRep.salvar(user);
+        res.send('Adicionado com sucesso');
+    };
+
+    controller.listar = (req, res) => {
+        userRep.listar((users) => {
+            res.status(200).json(users);       
+        })             
+    };
+
+    controller.filtrar = (req, res) => {
+        const id = req.params.id;
+        userRep.filtrar(id);
+        const r = res.body
+        console.log(r);
+        res.status(200).json("");     
     };
 
     controller.alterar = (req, res) => {
-        const user = req.body
+      /*   const user = req.body
         usuarios = usuarios.map(function(item, index){
             if(user.login === item.login){
                 return user
@@ -36,11 +40,11 @@ module.exports = () => {
             return item;
         })
         console.log(usuarios);
-        res.send('PUT');
+        res.send('PUT'); */
     };
 
     controller.excluir = (req, res) => {
-        res.send('delete');    
+        /* res.send('delete');     */
     };
 
     return controller

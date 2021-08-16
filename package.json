@@ -4,7 +4,8 @@
   "description": "node application for library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +16,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.12",
     "request": "^2.88.2"
   }
 }
