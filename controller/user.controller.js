@@ -1,4 +1,5 @@
 const request = require("request");
+const { changeUser } = require("../repository/connection");
 var userRep = require('../repository/user.repository')();
 
 module.exports = () => {
@@ -25,26 +26,24 @@ module.exports = () => {
 
     controller.filtrar = (req, res) => {
         const id = req.params.id;
-        userRep.filtrar(id);
-        const r = res.body
-        console.log(r);
-        res.status(200).json("");     
+        userRep.filtrar(id, function(err, rows) {
+            if(err){
+                console.log(err);
+            }
+            res.status(200).json(rows);
+        });        
     };
 
     controller.alterar = (req, res) => {
-      /*   const user = req.body
-        usuarios = usuarios.map(function(item, index){
-            if(user.login === item.login){
-                return user
-            }
-            return item;
-        })
-        console.log(usuarios);
-        res.send('PUT'); */
+        user = req.body;
+        userRep.alterar(user);
+        res.status(200).json(`User ${user.id}  alterado!`);
     };
 
     controller.excluir = (req, res) => {
-        /* res.send('delete');     */
+        const id = req.params.id;
+        userRep.excluir(id);
+        res.send(`delete ${id}`);    
     };
 
     return controller

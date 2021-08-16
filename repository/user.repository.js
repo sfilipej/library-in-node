@@ -25,17 +25,36 @@ module.exports = () => {
         });        
     }
 
-    repository.filtrar = (id) => {
-        con.query('SELECT * FROM USERS WHERE ID = ?',[id], function(err, rows) {
+    repository.filtrar = (id, callback) => {
+        con.query('SELECT * FROM USERS WHERE ID = ?', [id], function(err, rows) {
+           if(err)
+                callback(err, null);
+            else
+                callback(null, rows);
+        });
+    }
+
+    repository.alterar = (user) => {
+        console.log(user);
+        con.query('UPDATE USERS SET login = ?, senha = ?, cep =? WHERE ID = ?', [user.login, user.senha, user.cep, user.id], function(err, rows) {
             if(err){
                 console.log(err);
                 return;
             }
-            /* console.log(rows); */
-            return rows;
-        });        
+            /* console.log(`${rows.affectedRows}`); */
+          });
     }
 
+    repository.excluir = (id) => {
+        /* console.log(`DELETE FROM USERS WHERE ID = ${id}`); */
+        con.query('DELETE FROM USERS WHERE ID = ?', [id], function(err, rows) {
+            if(err){
+                /* console.log(err); */
+                return;
+            }
+            /* console.log(`deleted ${results.affectedRows}`); */
+          });
+    }
 
     return repository
 
