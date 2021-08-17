@@ -11,8 +11,12 @@ module.exports = () => {
         var cep = user.cep;
         request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
             user.endereco = body;
-            userRep.salvar(user);
-            res.send('Adicionado com sucesso');
+            userRep.salvar(user, function(err, callback){
+                if(err){
+                    console.log(err);                   
+                }
+                res.status(200).json(callback);
+            });
         });
     };
 
@@ -37,15 +41,25 @@ module.exports = () => {
         var cep = user.cep;
         request(`https://viacep.com.br/ws/${cep}/json/`, (error, response, body) => {
             user.endereco = body;
-            userRep.alterar(user);
-            res.status(200).json(`User ${user.id}  alterado!`);
+            userRep.alterar(user, function(err, rows){
+                if(err){
+                    console.log(err);
+                }
+                res.status(200).json(`User ${rows.affectedRows }  alterado!`);
+            });
+            
         });
     };
 
     controller.excluir = (req, res) => {
         const id = req.params.id;
-        userRep.excluir(id);
-        res.send(`delete ${id}`);    
+        userRep.excluir(id, function(err, callback){
+            if (err) {
+                console.log(err);
+            }
+                res.send(`delete ${id}`);     
+        });
+           
     };
 
     return controller

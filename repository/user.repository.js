@@ -3,56 +3,48 @@ const con = require('./connection');
 module.exports = () => {
 
     const repository = {};
-    repository.salvar = (user) => {
-        con.query('INSERT INTO USERS SET ?', user, function(err, res){
+    repository.salvar = (user, callback) => {
+        con.query('INSERT INTO USERS SET ?', user, function(err, response){
             if(err){
-                console.log(err);
-                return;
+                callback(err, null);
             }
-            /*console.log(`Inseriu... ${res.insertId}`); */
-            con.end();
+                callback(null, response)
             })    
     }
 
     repository.listar = (callback) => {
         con.query('SELECT * FROM USERS', function(err, rows) {
             if(err){
-                console.log(err);
-                return;
+                callback(err);
             }
-            /* console.log(rows); */
-            return callback(rows);
+                callback(rows);
         });        
     }
 
     repository.filtrar = (id, callback) => {
         con.query('SELECT * FROM USERS WHERE ID = ?', [id], function(err, rows) {
-           if(err)
-                callback(err, null);
-            else
+           if(err){
+                callback(err, null)
+            }
                 callback(null, rows);
         });
     }
 
-    repository.alterar = (user) => {
-        console.log(user);
+    repository.alterar = (user, callback) => {
         con.query('UPDATE USERS SET login = ?, senha = ?, cep =?, endereco =? WHERE ID = ?', [user.login, user.senha, user.cep, user.endereco, user.id], function(err, rows) {
             if(err){
-                console.log(err);
-                return;
+                callback(err, null)
             }
-            /* console.log(`${rows.affectedRows}`); */
+                callback(null, rows)
           });
     }
 
-    repository.excluir = (id) => {
-        /* console.log(`DELETE FROM USERS WHERE ID = ${id}`); */
+    repository.excluir = (id, callback) => {
         con.query('DELETE FROM USERS WHERE ID = ?', [id], function(err, rows) {
             if(err){
-                /* console.log(err); */
-                return;
+                callback(err, null)
             }
-            /* console.log(`deleted ${results.affectedRows}`); */
+                callback(null, rows)
           });
     }
 

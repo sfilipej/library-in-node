@@ -1,18 +1,23 @@
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'node_library'
-});
+const yaml = require('js-yaml');
+const fs = require('fs');
+const { callbackify } = require('util');
+try {
+  let fileContens = fs.readFileSync('./configs/database.yaml', 'utf8');
+  database = yaml.load(fileContens);
+  
+} catch (e) {
+  console.log(e);
+}
 
-connection.connect(function(err) {
+var connection = mysql.createConnection(database);
+
+connection.connect(function(err, response) {
   if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
+    return err    
   }
-  /* console.log('connected as id ' + connection.threadId); */
+    return response
 });
 
 module.exports = connection;
